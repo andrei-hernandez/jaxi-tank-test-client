@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SignUp = () => {
+const SignUp = (): JSX.Element => {
   return (
     <section className="flex flex-col items-center h-screen md:flex-row">
       <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
