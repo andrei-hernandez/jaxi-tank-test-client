@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
 import NotFound from '../Components/404';
 import Contacts from '../Components/Contacts';
 import Home from '../Components/Home';
-import Profile from '../Components/Profile';
 import Projects from '../Components/Projects';
 import SignIn from '../Components/SignIn ';
 import SignUp from '../Components/SignUp ';
@@ -21,9 +20,6 @@ const Routes = (): JSX.Element => {
         </Route>
         <Route path="/signup">
           <SignUp />
-        </Route>
-        <Route path="/profile">
-          <Profile />
         </Route>
         <Route path="/projects">
           <Projects />
