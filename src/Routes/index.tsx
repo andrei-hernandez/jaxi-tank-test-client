@@ -4,7 +4,7 @@ import NotFound from '../Components/404';
 import Contacts from '../Components/Contacts';
 import Home from '../Components/Home';
 import Profile from '../Components/Profile';
-import Proyects from '../Components/Proyects';
+import Projects from '../Components/Projects';
 import SignIn from '../Components/SignIn ';
 import SignUp from '../Components/SignUp ';
 import Tasks from '../Components/Tasks';
@@ -25,8 +25,8 @@ const Routes = (): JSX.Element => {
         <Route path="/profile">
           <Profile />
         </Route>
-        <Route path="/proyects">
-          <Proyects />
+        <Route path="/projects">
+          <Projects />
         </Route>
         <Route path="/tasks">
           <Tasks />
