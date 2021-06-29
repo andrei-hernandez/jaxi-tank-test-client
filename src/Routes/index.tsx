@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, } from "react-router-dom";
+import { useEffect, useState, useContext } from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect, } from "react-router-dom";
+import SessionContext from '../Components/Context';
 import NotFound from '../Components/404';
 import Contacts from '../Components/Contacts';
 import Home from '../Components/Home';
@@ -9,26 +10,38 @@ import SignUp from '../Components/SignUp ';
 import Tasks from '../Components/Tasks';
 
 const Routes = (): JSX.Element => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const sessionData = useContext(SessionContext);
+
+  useEffect(() => {
+    const { token } = sessionData;
+    if (token !== undefined !== null) {
+      setIsLoggedIn(true);
+    }
+  }, [sessionData]);
+
   return (
     <Router>
       <Switch>
         <Route path="/" exact>
-          <Home />
+          {isLoggedIn ? <Home /> : <Redirect to="/signin" />}
         </Route>
         <Route path="/signin">
+          {isLoggedIn ? <SignIn /> : <Redirect to="/" />}
           <SignIn />
         </Route>
         <Route path="/signup">
-          <SignUp />
+          {isLoggedIn ? <SignUp /> : <Redirect to="/" />}
         </Route>
         <Route path="/projects">
-          <Projects />
+          {isLoggedIn ? <Projects /> : <Redirect to="/signin" />}
         </Route>
         <Route path="/tasks">
-          <Tasks />
+          {isLoggedIn ? <Tasks /> : <Redirect to="/signin" />}
         </Route>
         <Route path="/contacts">
-          <Contacts />
+          {isLoggedIn ? <Contacts /> : <Redirect to="/signin" />}
         </Route>
         <Route>
           <NotFound />

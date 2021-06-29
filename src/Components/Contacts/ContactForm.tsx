@@ -1,10 +1,9 @@
-import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment, useRef } from 'react';
 
-const Profile = ({ open = false, setOpen = (open: boolean) => { } }) => {
-  const cancelButtonRef = useRef(null);
+const ContactForm = ({ open = false, setOpen = (open: boolean) => { } }) => {
+  const cancelButtonRef = useRef(null)
   return (
-    /* This example requires Tailwind CSS v2.0+ */
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -45,16 +44,12 @@ const Profile = ({ open = false, setOpen = (open: boolean) => { } }) => {
                 <div className="w-full sm:flex sm:items-start">
                   <div className="w-full mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                      Account Settings
+                      Add Contact
                     </Dialog.Title>
                     <div className="text-blueGray-700">
                       <div className="relative w-full mt-4">
-                        <label htmlFor="name" className="text-base leading-7 text-blueGray-500">User Name</label>
-                        <input type="name" id="name" name="name" placeholder="User Name" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
-                      </div>
-                      <div className="relative w-full mt-4">
-                        <label htmlFor="name" className="text-base leading-7 text-black">Avatar URL</label>
-                        <input type="url" id="url" name="url" placeholder="https://someavatar.com" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
+                        <label htmlFor="name" className="text-base leading-7 text-blueGray-500">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
 
@@ -86,4 +81,4 @@ const Profile = ({ open = false, setOpen = (open: boolean) => { } }) => {
   );
 }
 
-export default Profile;
+export default ContactForm;
