@@ -8,7 +8,7 @@ const SignIn = (): JSX.Element => {
       </div>
       <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 lg:px-16 xl:px-12 items-left justify-left">
         <div className="w-full py-32 lg:py-6 lg:h-100 inline-block align-middle">
-          <h1 className="my-12 font-black tracking-tighter text-black 2xl sm:text-5xl title-font">Sign Up.</h1>
+          <h1 className="my-12 font-black tracking-tighter text-black 2xl sm:text-5xl title-font">Sign In.</h1>
           <form className="mt-6" action="#" method="POST">
             <div>
               <label className="text-base font-medium leading-relaxed text-blueGray-700">Email Address</label>
@@ -24,7 +24,6 @@ const SignIn = (): JSX.Element => {
         </div>
       </div>
     </section >
-
   );
 }
 
