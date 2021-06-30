@@ -52,3 +52,15 @@ export const ADD_CONTACT = gql`
     }
   }
 `
+
+export const UPDATE_USER = gql`
+  mutation updateUser($token: String!, $userName: String!, $avatar: String!) {
+    editUser(user: { token: $token,userName: $userName,avatar: $avatar }) {
+      userHasUpdated
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`
