@@ -76,3 +76,47 @@ export const DELETE_USER = gql`
     }
   }
 `
+
+export const GET_PROYECTS = gql`
+  query getProyects($token: String!) {
+    getProyects(token: $token) {
+      proyects {
+        id
+        title
+        creator {
+          id
+          userName
+          avatar
+          email
+        }
+        members {
+          email
+          avatar
+          role
+        }
+        tasks {
+          id
+          proyectId
+          title
+          members {
+            email
+            avatar
+          }
+          status
+          startAt
+          endsAt
+          createdAt
+          updatedAt
+        }
+        startAt
+        endsAt
+        createdAt
+        updatedAt
+      }
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

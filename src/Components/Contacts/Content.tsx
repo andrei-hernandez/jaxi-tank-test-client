@@ -6,7 +6,7 @@ import { ADD_CONTACT, DELETE_USER, GET_CONTACTS } from '../../Queries';
 import Navigation from '../Navigation';
 import ContactForm from './ContactForm';
 
-const Content = () => {
+const Content = (): JSX.Element => {
 
   const [open, setOpen] = useState(false);
   const [token] = useState(localStorage.getItem('token'));
