@@ -4,12 +4,9 @@ import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
 import reportWebVitals from './reportWebVitals';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 const client = new ApolloClient({
-  uri: `${process.env.GRAPQL_ENDPOINT}`,
+  uri: 'http://34.73.58.215:4000/graphql',
   cache: new InMemoryCache()
 });
 

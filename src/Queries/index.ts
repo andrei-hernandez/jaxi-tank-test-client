@@ -64,3 +64,15 @@ export const UPDATE_USER = gql`
     }
   }
 `
+
+export const DELETE_USER = gql`
+  mutation deleteContact($token: String!,$email: String!) {
+    deleteContact(contact: { token: $token, email:$email }) {
+      contactHasDeleted
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

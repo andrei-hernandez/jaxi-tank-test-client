@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { ADD_CONTACT, GET_CONTACTS } from '../../Queries';
+import { ADD_CONTACT, DELETE_USER, GET_CONTACTS } from '../../Queries';
 import Navigation from '../Navigation';
 import ContactForm from './ContactForm';
 
@@ -12,9 +12,10 @@ const Content = () => {
   const [token] = useState(localStorage.getItem('token'));
   const [email, setEmail] = useState('');
 
-  const { data, refetch } = useQuery(GET_CONTACTS, { variables: { token } });
+  const { data, refetch } = useQuery(GET_CONTACTS, { variables: { token }, fetchPolicy: "network-only" });
 
   const [addContact] = useMutation(ADD_CONTACT, { onCompleted: (data: any) => checkErrors(data) });
+  const [removeContact] = useMutation(DELETE_USER, { onCompleted: (data: any) => checkDeleteErrors(data) });
 
   const toggleModal = (e: any) => {
     e.preventDefault();
@@ -28,6 +29,19 @@ const Content = () => {
 
   const handleSubmit = (e: any) => {
     addContact({ variables: { email, token } });
+  }
+
+  const handleDeleteContactButton = (e: any) => {
+    removeContact({ variables: { email: e.target.name, token } });
+  }
+
+  const checkDeleteErrors = (data: any) => {
+    if (data?.deleteContact?.err || data.deleteContact?.contactHasDeleted === false) {
+      toast.error(`${data?.deleteContact?.err?.errorDesc}`, { duration: 2300, });
+    } else if (data.deleteContact?.contactHasDeleted === true) {
+      toast.success('Contact Deleted');
+      refetch();
+    }
   }
 
   const checkErrors = (data: any) => {
@@ -52,7 +66,7 @@ const Content = () => {
                   <h1 className="mx-auto mb-8 text-2xl font-semibold leading-none tracking-tighter text-black lg:text-3xl title-font"> {contact?.userName} </h1>
                   <img className="border-2 border-black w-96 h-96 rounded-xl border-opacity-85" src={contact?.avatar} alt="profileAvatar" />
                   <p className="mt-4 text-xl transition duration-300 ease-in-out transform hover:text-indigo-500">{contact?.email}</p>
-                  <button className="w-full px-16 py-2 mt-4 text-base font-medium text-white transition duration-500 ease-in-out transform bg-red-500 border-black rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900 "> Delete Contact </button>
+                  <button name={contact?.email} onClick={handleDeleteContactButton} className="w-full px-16 py-2 mt-4 text-base font-medium text-white transition duration-500 ease-in-out transform bg-red-500 border-black rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900 "> Delete Contact </button>
                 </div>
               </div>
             ))}
