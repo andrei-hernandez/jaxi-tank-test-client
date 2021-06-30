@@ -4,9 +4,6 @@ import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
 import reportWebVitals from './reportWebVitals';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 const client = new ApolloClient({
   uri: 'https://jaxi-tank-test-api.vercel.app/graphql',
