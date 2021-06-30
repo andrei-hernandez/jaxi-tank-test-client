@@ -120,3 +120,15 @@ export const GET_PROYECTS = gql`
     }
   }
 `
+
+export const ADD_PROYECT = gql`
+  mutation addProyect( $token: String!, $title: String!, $members: [String!]!, $creator: String!, $startAt: String!, $endsAt: String!) {
+    createProyect(proyect: {token: $token, title: $title, members: $members, creator: $creator, startAt: $startAt, endsAt: $endsAt}) {
+      proyectHasCreated
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

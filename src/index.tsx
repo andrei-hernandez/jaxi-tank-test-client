@@ -6,7 +6,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
 import reportWebVitals from './reportWebVitals';
 
 const client = new ApolloClient({
-  uri: 'https://jaxi-tank-test-api.vercel.app/graphql',
+  uri: 'http://34.73.58.215:4000/graphql',
   cache: new InMemoryCache()
 });
 
