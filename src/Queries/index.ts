@@ -27,3 +27,28 @@ export const ADD_USER = gql`
     }
   }
 `
+
+export const GET_CONTACTS = gql`
+  query getContacts($token: String!){
+    getContacts(token: $token){
+      contacts {
+        _id
+        userName
+        email
+        avatar
+      }
+    }
+  }
+`
+
+export const ADD_CONTACT = gql`
+  mutation addContact($token: String! $email: String!) {
+    createContact(contact: {token: $token,email: $email}) {
+      contactHasCreated
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

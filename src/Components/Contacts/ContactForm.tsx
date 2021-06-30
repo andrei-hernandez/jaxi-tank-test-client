@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useRef } from 'react';
+import { Fragment, useRef } from 'react';
 
-const ContactForm = ({ open = false, setOpen = (open: boolean) => { } }) => {
+const ContactForm = ({ open = false, setOpen = (open: boolean) => { }, handleInputChange = (e: any) => { }, handleSubmit = (e: any) => { } }) => {
   const cancelButtonRef = useRef(null)
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -49,7 +49,13 @@ const ContactForm = ({ open = false, setOpen = (open: boolean) => { } }) => {
                     <div className="text-blueGray-700">
                       <div className="relative w-full mt-4">
                         <label htmlFor="name" className="text-base leading-7 text-blueGray-500">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          placeholder="Email"
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
 
@@ -60,9 +66,9 @@ const ContactForm = ({ open = false, setOpen = (open: boolean) => { } }) => {
                 <button
                   type="button"
                   className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => setOpen(false)}
+                  onClick={handleSubmit}
                 >
-                  Save Settings
+                  Save Contact
                 </button>
                 <button
                   type="button"
