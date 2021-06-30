@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
-
 import reportWebVitals from './reportWebVitals';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const client = new ApolloClient({
-  uri: 'http://34.73.58.215:4000/graphql',
+  uri: `${process.env.GRAPQL_ENDPOINT}`,
   cache: new InMemoryCache()
 });
 
