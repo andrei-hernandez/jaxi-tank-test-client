@@ -9,7 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const client = new ApolloClient({
-  uri: `${process.env.GRAPQL_ENDPOINT}`,
+  uri: 'https://jaxi-tank-test-api.vercel.app/graphql',
   cache: new InMemoryCache()
 });
 
