@@ -132,3 +132,56 @@ export const ADD_PROYECT = gql`
     }
   }
 `
+
+export const GET_ONE_PROYECT = gql`
+  query getOneProyect ($token: String!, $proyectId: String!) {
+    getOneProyect(proyect: {token: $token, proyectId: $proyectId}) {
+      proyect {
+        id
+        title
+        creator {
+          id
+          userName
+          avatar
+          email
+        }
+        members {
+          id
+          email
+          avatar
+          role
+        }
+        tasks {
+          id
+          proyectId
+          title
+          members {
+            id
+            email
+            avatar
+          }
+          status
+          startAt
+          endsAt
+          createdAt
+          updatedAt
+        }
+        startAt
+        endsAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+export const ADD_PROYECT_MEMBER = gql`
+  mutation addMember($token: String!, $proyectId: String!, $email: String!, $role: String!) {
+    addMember(member: {token: $token, proyectId: $proyectId, email: $email, role: $role}) {
+      memberHasAdded
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { ADD_PROYECT, GET_PROYECTS } from '../../Queries';
 import CreateProyectForm from './CreateProyectForm';
+import { format } from 'timeago.js';
+import { Link } from 'react-router-dom';
 
 const AllProjects = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -74,7 +76,7 @@ const AllProjects = () => {
                   </h1>
                   <h1 className="mx-auto mb-6 font-medium leading-none tracking-tighter text-black text-xg title-font">
                     <ul>
-                      <p className="text-lg">Members</p>
+                      <p className="text-lg">Task Members</p>
                       {
                         proyect?.members?.map((member: any) => (
                           <li className="pl-3 mt-2 text-gray-700 text-md" key={member?.email}>{member?.email}</li>
@@ -83,9 +85,11 @@ const AllProjects = () => {
                     </ul>
                   </h1>
                   <p className="mx-auto text-sm font-medium leading-relaxed text-gray-700 ">Creator: {proyect?.creator?.email}</p>
-                  <p className="mx-auto text-sm font-medium leading-relaxed text-gray-700 ">Start At: {proyect?.startAt}</p>
-                  <p className="mx-auto text-sm font-medium leading-relaxed text-gray-700 ">Ends At: {proyect?.endsAt}</p>
-                  <button name={proyect?.id} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-black border-black rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">View more</button>
+                  <p className="mx-auto text-sm font-medium leading-relaxed text-gray-700 ">Start At: {format(proyect?.startAt)}</p>
+                  <p className="mx-auto text-sm font-medium leading-relaxed text-gray-700 ">Ends At: {format(proyect?.endsAt)}</p>
+                  <Link to={`/projects/${proyect?.id}`}>
+                    <button name={proyect?.id} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-black border-black rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">View more</button>
+                  </Link>
                 </div>
               </div>
             ))}
