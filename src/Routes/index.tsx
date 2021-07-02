@@ -7,6 +7,7 @@ import OneProjects from "../Components/Projects/OneProjects";
 import SignIn from '../Components/SignIn ';
 import SignUp from '../Components/SignUp ';
 import Tasks from '../Components/Tasks';
+import OneTask from "../Components/Tasks/OneTask";
 
 const Routes = (): JSX.Element => {
   return (
@@ -17,6 +18,9 @@ const Routes = (): JSX.Element => {
         </Route>
         <Route path="/projects/:projectId">
           <OneProjects />
+        </Route>
+        <Route path="tasks/:taskId">
+          <OneTask />
         </Route>
         <Route path="/signin">
           <SignIn />

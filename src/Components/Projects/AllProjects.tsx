@@ -76,7 +76,7 @@ const AllProjects = () => {
                   </h1>
                   <h1 className="mx-auto mb-6 font-medium leading-none tracking-tighter text-black text-xg title-font">
                     <ul>
-                      <p className="text-lg">Task Members</p>
+                      <p className="text-lg">Proyect Members</p>
                       {
                         proyect?.members?.map((member: any) => (
                           <li className="pl-3 mt-2 text-gray-700 text-md" key={member?.email}>{member?.email}</li>

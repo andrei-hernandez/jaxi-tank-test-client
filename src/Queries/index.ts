@@ -185,3 +185,15 @@ export const ADD_PROYECT_MEMBER = gql`
     }
   }
 `
+
+export const UPDATE_PROYECT = gql`
+  mutation updateProyect($token: String!, $proyectId: ID!, $title: String!, $startAt: String!, $endsAt: String!) {
+    editProyect(proyect: {token: $token, proyectId: $proyectId, title: $title, startAt: $startAt, endsAt: $endsAt}) {
+      proyectHasUpdated
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`
