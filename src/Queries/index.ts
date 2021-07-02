@@ -197,3 +197,38 @@ export const UPDATE_PROYECT = gql`
     }
   }
 `
+
+export const GET_ONE_TASK = gql`
+  query getOneTask($token: String!, $taskId: String!) {
+    getOneTask(task: { token: $token, taskId: $taskId }) {
+      task {
+        id
+        proyectId
+        title
+        description
+        members {
+          id
+          email
+          avatar
+        }
+        status
+        startAt
+        endsAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+export const ADD_TASK_MEMBER = gql`
+  mutation createTaskMember($token: String!, $memberEmail: ID!, $taskId: ID!) {
+    addTaskMember(member: {token: $token, memberEmail: $memberEmail, taskId: $taskId}) {
+      memberHasAdded
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`

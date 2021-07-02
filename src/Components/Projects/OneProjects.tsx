@@ -19,7 +19,8 @@ const OneProjects = () => {
 
   const { data, refetch } = useQuery(GET_ONE_PROYECT, {
     variables: { token, proyectId },
-    fetchPolicy: "network-only",
+    //fetchPolicy: "network-only",
+    onCompleted: (data) => console.log('a')
   });
 
   const [addProyectMember] = useMutation(ADD_PROYECT_MEMBER, {
@@ -39,7 +40,6 @@ const OneProjects = () => {
   })
 
   const handleEditClick = async () => {
-    console.log(title, startAt, endsAt);
     await updateProyect({ variables: { token, proyectId, title, startAt, endsAt } });
   }
 
@@ -100,7 +100,7 @@ const OneProjects = () => {
               </h1>
               <button
                 onClick={() => setOpenEdit(true)}
-                className="p-2 mx-auto font-medium text-white duration-300 ease-in-out transform bg-blue-600 rounded-md hover:bg-blue-700 ransition">
+                className="p-2 ml-auto mr-6 font-medium text-white duration-300 ease-in-out transform bg-blue-600 rounded-md hover:bg-blue-700 ransition">
                 Edit Project
               </button>
             </div>

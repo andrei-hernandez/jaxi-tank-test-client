@@ -16,11 +16,11 @@ const Routes = (): JSX.Element => {
         <Route path="/" exact>
           <Home />
         </Route>
+        <Route path="/tasks/:taskId">
+          <OneTask />
+        </Route>
         <Route path="/projects/:projectId">
           <OneProjects />
-        </Route>
-        <Route path="tasks/:taskId">
-          <OneTask />
         </Route>
         <Route path="/signin">
           <SignIn />
