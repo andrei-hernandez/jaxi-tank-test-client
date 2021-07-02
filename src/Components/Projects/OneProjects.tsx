@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ADD_PROYECT_MEMBER, GET_ONE_PROYECT } from '../../Queries';
 import Navigation from '../Navigation';
-import { PlusCircleIcon, UserAddIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/outline';
 import AddProyectMember from './AddProyectMember';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -43,11 +43,10 @@ const OneProjects = (props: any) => {
       toast.error(`${data?.addMember?.err?.errorDesc}`, { duration: 2300, });
     } else if (data.addMember?.memberHasAdded === true) {
       toast.success('Member Added');
-      refetch();
+      await refetch();
       setOpen(false);
     }
   }
-
 
   return (
     <>
@@ -71,13 +70,12 @@ const OneProjects = (props: any) => {
                       <div className="p-6">
                         <h1 className="mx-auto mb-4 text-2xl font-semibold leading-none tracking-tighter text-black lg:text-3xl"> {task?.title} </h1>
                         <h2 className="px-2 mb-4 text-2xl font-medium text-black">{task?.status}</h2>
-                        <h2 className="mx-auto mb-2 font-medium leading-none tracking-tighter text-black text-md lg:text-2xl"> Task Members </h2>
+                        <h2 className="mx-auto mb-2 font-medium leading-none tracking-tighter text-black text-md lg:text-2xl">Proyect Members</h2>
                         {task?.members?.length === 0 ? <p> No Members yet </p> : task?.members?.map((member: any) => (
                           <div className="flex flex-col transition duration-200 ease-in-out transform rounded-lg hover:bg-gray-300" key={member?.id}>
                             <div className="flex flex-row p-3">
                               <img src={member?.avatar} alt={member?.email} className="mt-1 border-2 border-black border-opacity-75 h-11 w-11 rounded-xl" />
                               <p className="px-3 pt-2 mt-1">{member?.email}</p>
-                              <button className="ml-auto transition duration-200 ease-in-out transform rounded-full hover:bg-gray-400"><UserAddIcon className="w-8 h-8 m-2"></UserAddIcon></button>
                             </div>
                           </div>
                         ))}
