@@ -232,3 +232,73 @@ export const ADD_TASK_MEMBER = gql`
     }
   }
 `
+
+export const UPDATE_TASK = gql`
+  mutation updateTask($token: String!, $taskId: String!, $title: String!, $description: String! $status: String!, $startAt: String!, $endsAt: String) {
+  editTask(task: {token: $token, taskId: $taskId, title: $title, description: $description, status: $status, startAt: $startAt, endsAt: $endsAt}) {
+    taskHasUpdated
+    err {
+      errorCode
+      errorDesc
+    }
+  }
+}
+`
+
+export const ADD_TASK = gql`
+  mutation addTask($token: String! $proyectId:String! $title: String! $members:[String!] $description: String! $status: String! $startAt: String! $endsAt: String!) {
+    addTask(task: {token: $token, proyectId: $proyectId, title: $title, description: $description, members: $members, status: $status, startAt: $startAt, endsAt: $endsAt}) {
+      taskHasCreated
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`
+
+export const REMOVE_TASK = gql`
+  mutation removeTask($token: String!, $taskId: String!) {
+    deleteTask(task: {token: $token, taskId: $taskId}) {
+      taskHasDeleted
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`
+
+export const REMOVE_PROYECT = gql`
+  mutation removeProyect($token: String!, $proyectId: String!) {
+    deleteProyect(proyect: {token: $token, proyectId: $proyectId}) {
+      proyectHasDeleted
+      err {
+        errorCode
+        errorDesc
+      }
+    }
+  }
+`
+
+export const GET_TASKS_FROM_USER = gql`
+  query getTasksFromUser($token: String!) {
+    getTasksFromUser(token: $token){
+      tasks {
+        id
+        proyectId
+        title
+        members {
+          id
+          email
+          avatar
+        }
+        status
+        startAt
+        endsAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`

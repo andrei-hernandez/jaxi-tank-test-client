@@ -1,17 +1,20 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ADD_PROYECT_MEMBER, GET_ONE_PROYECT, UPDATE_PROYECT } from '../../Queries';
+import { ADD_PROYECT_MEMBER, ADD_TASK, GET_ONE_PROYECT, REMOVE_TASK, UPDATE_PROYECT } from '../../Queries';
 import Navigation from '../Navigation';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import AddProyectMember from './AddProyectMember';
 import toast, { Toaster } from 'react-hot-toast';
 import EditProyectForm from './EditProyectForm';
+import AddTaskForm from './AddTaskForm';
 
 const OneProjects = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [addTaskOpen, setAddTaskOpen] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = useState<boolean>(false);
   const [token] = useState<string | any>(localStorage.getItem('token'));
+  const [creator] = useState<string | null>(localStorage.getItem('userId'));
   const [email, setEmail] = useState<string | null>('');
   const [role, setRole] = useState<string | null>('');
   const params: any | undefined = useParams();
@@ -19,8 +22,6 @@ const OneProjects = () => {
 
   const { data, refetch } = useQuery(GET_ONE_PROYECT, {
     variables: { token, proyectId },
-    //fetchPolicy: "network-only",
-    onCompleted: (data) => console.log('a')
   });
 
   const [addProyectMember] = useMutation(ADD_PROYECT_MEMBER, {
@@ -34,6 +35,8 @@ const OneProjects = () => {
   let [title, setTitle] = useState<string | undefined>('');
   let [startAt, setStartAt] = useState<string | undefined>('');
   let [endsAt, setEndsAt] = useState<string | undefined>('');
+  const [desc, setDesc] = useState<string | undefined>('');
+  const [status, setStatus] = useState<string | undefined>('todo');
 
   const [updateProyect] = useMutation(UPDATE_PROYECT, {
     onCompleted: (data) => checkUpdateProyectErrors(data)
@@ -43,6 +46,19 @@ const OneProjects = () => {
     await updateProyect({ variables: { token, proyectId, title, startAt, endsAt } });
   }
 
+  const [addTask] = useMutation(ADD_TASK, { onCompleted: (data: any) => checkAddTaskErrors(data) });
+
+  const [deleteTask] = useMutation(REMOVE_TASK, { onCompleted: (data: any) => checkDeleteTaskErrors(data) });
+
+  const handleDeleteTaskClick = async ({ target }: any) => {
+    const taskId = target?.name;
+    await deleteTask({ variables: { token, taskId } });
+  }
+
+  const handleAddTaskClick = async () => {
+    const members = [creator];
+    await addTask({ variables: { token, proyectId, title, members, description: desc, status, startAt, endsAt } });
+  }
 
   const handleInputChange = ({ target }: any) => {
     const { value, name } = target;
@@ -55,11 +71,19 @@ const OneProjects = () => {
     if (name === 'title') {
       setTitle(value);
     }
+    if (name === 'status') {
+      setStatus(value);
+    }
+    if (name === 'desc') {
+      setDesc(value);
+    }
     if (name === 'startAt') {
-      setStartAt(value);
+      const date = Date.parse(value);
+      setStartAt(date.toString());
     }
     if (name === 'endsAt') {
-      setEndsAt(value);
+      const date = Date.parse(value);
+      setEndsAt(date.toString());
     }
   }
 
@@ -83,6 +107,26 @@ const OneProjects = () => {
     }
   }
 
+
+  const checkAddTaskErrors = async (data: any) => {
+    if (data?.addTask?.err || data.addTask?.taskHasCreated === false) {
+      toast.error(`${data?.adTask?.err?.errorDesc}`, { duration: 2300, });
+    } else if (data.addTask?.taskHasCreated === true) {
+      toast.success('Task Added');
+      await refetch();
+      setAddTaskOpen(false);
+    }
+  }
+
+  const checkDeleteTaskErrors = async (data: any) => {
+    if (data?.deleteTask?.err || data.deleteTask?.taskHasDeleted === false) {
+      toast.error(`${data?.deleteTask?.err?.errorDesc}`, { duration: 2300, });
+    } else if (data.deleteTask?.taskHasDeleted === true) {
+      toast.success('Task Deleted');
+      await refetch();
+    }
+  }
+
   return (
     <>
       <Toaster
@@ -100,8 +144,13 @@ const OneProjects = () => {
               </h1>
               <button
                 onClick={() => setOpenEdit(true)}
-                className="p-2 ml-auto mr-6 font-medium text-white duration-300 ease-in-out transform bg-blue-600 rounded-md hover:bg-blue-700 ransition">
+                className="p-2 ml-auto mr-3 font-medium text-white duration-300 ease-in-out transform bg-blue-600 rounded-md hover:bg-blue-700 ransition">
                 Edit Project
+              </button>
+              <button
+                onClick={() => setAddTaskOpen(true)}
+                className="p-2 mr-6 font-medium text-white duration-300 ease-in-out transform bg-black rounded-md hover:bg-gray-900 ransition">
+                Add Task
               </button>
             </div>
             <section className="text-gray-700 ">
@@ -124,6 +173,7 @@ const OneProjects = () => {
                         <Link to={`/tasks/${task?.id}`}>
                           <button name={task?.id} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-black border-black rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">View more</button>
                         </Link>
+                        <button name={task?.id} onClick={handleDeleteTaskClick} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-red-600 border-red-600 rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">Delete Task</button>
                       </div>
                     </div>
                   ))}
@@ -161,8 +211,12 @@ const OneProjects = () => {
         handleInputChange={handleInputChange}
         handleEditClick={handleEditClick}
         setOpen={setOpenEdit}
-        token={token}
-        proyectId={proyectId}
+      />
+      <AddTaskForm
+        open={addTaskOpen}
+        setOpen={setAddTaskOpen}
+        handleAddTaskClick={handleAddTaskClick}
+        handleInputChange={handleInputChange}
       />
     </>
   );

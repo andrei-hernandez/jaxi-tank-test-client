@@ -1,22 +1,23 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useRef } from 'react';
+import React, { Fragment, useRef } from 'react';
 
-
-const EditProyectForm = (
+const EditTaskForm = (
   {
     data = {
-      getOneProyect: {
-        proyect: {
+      getOneTask: {
+        task: {
           title: '',
+          description: '',
           startAt: '',
-          endsAt: ''
+          endsAt: '',
+          status: ''
         }
       }
     },
     open = false,
     setOpen = (open: boolean) => { },
     handleInputChange = (e: any) => { },
-    handleEditClick = () => { }
+    handleEditTaskClick = () => { }
   }
 ) => {
   const cancelButtonRef = useRef(null);
@@ -64,26 +65,48 @@ const EditProyectForm = (
                     </Dialog.Title>
                     <div className="text-gray-700">
                       <div className="relative w-full mt-4">
-                        <label htmlFor="name" className="text-base leading-7 text-black">Proyect Title</label>
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Title</label>
                         <input
                           type="title"
                           id="proyectTitle"
                           name="title"
-                          defaultValue={data?.getOneProyect?.proyect?.title}
                           onChange={handleInputChange}
+                          defaultValue={data?.getOneTask?.task?.title}
                           placeholder="Example: Awesome Title"
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
+                      </div>
+                      <div className="relative w-full mt-4">
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Description</label>
+                        <textarea
+                          name="desc"
+                          id="desc"
+                          onChange={handleInputChange}
+                          defaultValue={data?.getOneTask?.task?.description}
+                          cols={30}
+                          rows={7} placeholder="Example: Awesome Description" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"></textarea>
+                      </div>
+                      <div className="relative w-full mt-4">
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Status</label>
+                        <select
+                          name="status"
+                          onChange={handleInputChange}
+                          id="status" className="px-1 mx-3"
+                          defaultValue={data?.getOneTask?.task?.status}>
+                          <option value="todo">To-Do</option>
+                          <option value="doing">Doing</option>
+                          <option value="done">Done</option>
+                        </select>
                       </div>
                     </div>
                     <div className="text-gray-700">
                       <div className="relative w-full mt-4">
                         <label htmlFor="name" className="text-base leading-7 text-black">Start At</label>
                         <input
+                          onChange={handleInputChange}
                           type="date"
                           id="startAt"
                           name="startAt"
-                          defaultValue={data?.getOneProyect?.proyect?.startAt}
-                          onChange={handleInputChange}
+                          defaultValue={data?.getOneTask?.task?.startAt}
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
@@ -91,11 +114,11 @@ const EditProyectForm = (
                       <div className="relative w-full mt-4">
                         <label htmlFor="name" className="text-base leading-7 text-black">Ends At</label>
                         <input
+                          onChange={handleInputChange}
                           type="date"
                           id="endsAt"
                           name="endsAt"
-                          defaultValue={data?.getOneProyect?.proyect?.endsAt}
-                          onChange={handleInputChange}
+                          defaultValue={data?.getOneTask?.task?.endsAt}
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
@@ -104,8 +127,8 @@ const EditProyectForm = (
                 <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
+                    onClick={handleEditTaskClick}
                     className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleEditClick}
                   >
                     Edit Proyect
                   </button>
@@ -127,4 +150,4 @@ const EditProyectForm = (
   );
 }
 
-export default EditProyectForm;
+export default EditTaskForm;

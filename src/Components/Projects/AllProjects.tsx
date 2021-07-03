@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { ADD_PROYECT, GET_PROYECTS } from '../../Queries';
+import { ADD_PROYECT, GET_PROYECTS, REMOVE_PROYECT } from '../../Queries';
 import CreateProyectForm from './CreateProyectForm';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,12 @@ const AllProjects = () => {
     await addProyect({ variables: { token, title, members, creator, startAt, endsAt } })
   }
 
+  const [removeProyect] = useMutation(REMOVE_PROYECT, { onCompleted: (data: any) => checkDeleteProyectErrors(data) });
+
+  const handleDeleteProyect = async ({ target }: any) => {
+    await removeProyect({ variables: { token, proyectId: target?.name } });
+  }
+
   const handleInputChange = ({ target }: any) => {
     const { value, name } = target;
     if (name === "title") {
@@ -49,6 +55,15 @@ const AllProjects = () => {
     } else if (data.createProyect?.proyectHasCreated === true) {
       toast.success('Proyect Added');
       setOpen(false);
+      await refetch();
+    }
+  }
+
+  const checkDeleteProyectErrors = async (data: any) => {
+    if (data?.deleteProyect?.err || data.deleteProyect?.proyectHasDeleted === false) {
+      toast.error(`${data?.deleteProyect?.err?.errorDesc}`, { duration: 2300, });
+    } else if (data.deleteProyect?.proyectHasDeleted === true) {
+      toast.success('Proyect Deleted');
       await refetch();
     }
   }
@@ -90,6 +105,7 @@ const AllProjects = () => {
                   <Link to={`/projects/${proyect?.id}`}>
                     <button name={proyect?.id} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-black border-black rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">View more</button>
                   </Link>
+                  <button name={proyect?.id} onClick={handleDeleteProyect} className="w-full px-16 py-2 mt-4 font-medium text-white transition duration-500 ease-in-out transform bg-red-600 border-red-600 rounded-md text-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blueGray-900">Delete Proyect</button>
                 </div>
               </div>
             ))}

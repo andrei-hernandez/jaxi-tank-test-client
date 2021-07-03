@@ -1,24 +1,12 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useRef } from 'react';
+import { Transition, Dialog } from '@headlessui/react';
+import React, { Fragment, useRef } from 'react';
 
-
-const EditProyectForm = (
-  {
-    data = {
-      getOneProyect: {
-        proyect: {
-          title: '',
-          startAt: '',
-          endsAt: ''
-        }
-      }
-    },
-    open = false,
-    setOpen = (open: boolean) => { },
-    handleInputChange = (e: any) => { },
-    handleEditClick = () => { }
-  }
-) => {
+const AddTaskForm = ({
+  open = false,
+  setOpen = (open: boolean) => { },
+  handleInputChange = (e: any) => { },
+  handleAddTaskClick = () => { }
+}) => {
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -64,26 +52,45 @@ const EditProyectForm = (
                     </Dialog.Title>
                     <div className="text-gray-700">
                       <div className="relative w-full mt-4">
-                        <label htmlFor="name" className="text-base leading-7 text-black">Proyect Title</label>
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Title</label>
                         <input
                           type="title"
                           id="proyectTitle"
                           name="title"
-                          defaultValue={data?.getOneProyect?.proyect?.title}
                           onChange={handleInputChange}
                           placeholder="Example: Awesome Title"
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
+                      </div>
+                      <div className="relative w-full mt-4">
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Description</label>
+                        <textarea
+                          name="desc"
+                          id="desc"
+                          onChange={handleInputChange}
+                          cols={30}
+                          rows={7} placeholder="Example: Awesome Description" className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"></textarea>
+                      </div>
+                      <div className="relative w-full mt-4">
+                        <label htmlFor="name" className="text-base leading-7 text-black">Task Status</label>
+                        <select
+                          name="status"
+                          value="todo"
+                          onChange={handleInputChange}
+                          id="status" className="px-1 mx-3">
+                          <option value="todo">To-Do</option>
+                          <option value="doing">Doing</option>
+                          <option value="done">Done</option>
+                        </select>
                       </div>
                     </div>
                     <div className="text-gray-700">
                       <div className="relative w-full mt-4">
                         <label htmlFor="name" className="text-base leading-7 text-black">Start At</label>
                         <input
+                          onChange={handleInputChange}
                           type="date"
                           id="startAt"
                           name="startAt"
-                          defaultValue={data?.getOneProyect?.proyect?.startAt}
-                          onChange={handleInputChange}
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
@@ -91,11 +98,10 @@ const EditProyectForm = (
                       <div className="relative w-full mt-4">
                         <label htmlFor="name" className="text-base leading-7 text-black">Ends At</label>
                         <input
+                          onChange={handleInputChange}
                           type="date"
                           id="endsAt"
                           name="endsAt"
-                          defaultValue={data?.getOneProyect?.proyect?.endsAt}
-                          onChange={handleInputChange}
                           className="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg focus:border-gray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
                       </div>
                     </div>
@@ -104,10 +110,10 @@ const EditProyectForm = (
                 <div className="px-4 py-3 bg-gray-50 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
+                    onClick={handleAddTaskClick}
                     className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-gray-800 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleEditClick}
                   >
-                    Edit Proyect
+                    Add Task
                   </button>
                   <button
                     type="button"
@@ -127,4 +133,4 @@ const EditProyectForm = (
   );
 }
 
-export default EditProyectForm;
+export default AddTaskForm;

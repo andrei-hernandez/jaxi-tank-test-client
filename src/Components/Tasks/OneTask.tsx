@@ -3,22 +3,54 @@ import { PlusCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
-import { ADD_TASK_MEMBER, GET_ONE_TASK } from '../../Queries';
+import { format } from 'timeago.js';
+import { ADD_TASK_MEMBER, GET_ONE_TASK, UPDATE_TASK } from '../../Queries';
 import Navigation from '../Navigation';
 import AddTaskMember from './AddTaskMember';
+import EditTaskForm from './EditTaskForm';
 
 const OneTask = () => {
   const [token] = useState(localStorage.getItem('token'));
   const [open, setOpen] = useState<boolean>(false);
+  const [editTaskOpen, setEditTaskOpen] = useState<boolean>(false);
   const { taskId }: any = useParams();
   const [email, setEmail] = useState<string | null>('');
+  const [title, setTitle] = useState<string | null>('');
+  const [desc, setDesc] = useState<string | null>('');
+  const [startAt, setStartAt] = useState<string | null>('');
+  const [endsAt, setEndsAt] = useState<string | null>('');
+  const [status, setStatus] = useState<string | null>('');
 
   const { data, refetch } = useQuery(GET_ONE_TASK, { variables: { token, taskId } });
   const [addTaskMember] = useMutation(ADD_TASK_MEMBER, { onCompleted: (data: any) => checkErrors(data) });
+  const [editTask] = useMutation(UPDATE_TASK, { onCompleted: (data: any) => checkEditTaskErrors(data) });
 
   const handleInputChange = ({ target }: any) => {
-    const { value } = target;
-    setEmail(value);
+    const { value, name } = target;
+    if (name === 'email') {
+      setEmail(value);
+    }
+    if (name === 'title') {
+      setTitle(value);
+    }
+    if (name === 'desc') {
+      setDesc(value);
+    }
+    if (name === 'startAt') {
+      const date = Date.parse(value);
+      setStartAt(date.toString());
+    }
+    if (name === 'endsAt') {
+      const date = Date.parse(value);
+      setEndsAt(date.toString());
+    }
+    if (name === 'status') {
+      value === '' ? setStatus('todo') : setStatus(value);
+    }
+  }
+
+  const handleEditTaskClick = async () => {
+    await editTask({ variables: { token, taskId, title, description: desc, status, startAt, endsAt } });
   }
 
   const handleAddContactClick = async () => {
@@ -32,6 +64,16 @@ const OneTask = () => {
       toast.success('Member Added');
       await refetch();
       setOpen(false);
+    }
+  }
+
+  const checkEditTaskErrors = async (data: any) => {
+    if (data?.editTask?.err || data.editTask?.taskHasUpdated === false) {
+      toast.error(`${data?.editTask?.err?.errorDesc}`, { duration: 2300, });
+    } else if (data.editTask?.taskHasUpdated === true) {
+      toast.success('Task Updated');
+      await refetch();
+      setEditTaskOpen(false);
     }
   }
 
@@ -50,6 +92,7 @@ const OneTask = () => {
                 {data?.getOneTask?.task?.title}
               </h1>
               <button
+                onClick={() => setEditTaskOpen(true)}
                 className="p-2 ml-auto mr-6 font-medium text-white duration-300 ease-in-out transform bg-blue-600 rounded-md hover:bg-blue-700 ransition">
                 Edit Task
               </button>
@@ -60,6 +103,16 @@ const OneTask = () => {
                   <div className="w-full mx-auto my-4 bg-gray-100 rounded-xl" >
                     <div className="p-6">
                       <h2 className="p-2 mb-4 text-xl font-medium text-black">{data?.getOneTask?.task?.description}</h2>
+                    </div>
+                    <div className="px-4 py-2 ml-4">
+                      <div className="text-xl p2">
+                        Start At: {format(data?.getOneTask?.task?.startAt)}
+                      </div>
+                    </div>
+                    <div className="px-4 pb-4 ml-4">
+                      <div className="text-xl p2">
+                        Ends At: {format(data?.getOneTask?.task?.endsAt)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -95,6 +148,13 @@ const OneTask = () => {
         setOpen={setOpen}
         handleInputChange={handleInputChange}
         handleAddContactClick={handleAddContactClick}
+      />
+      <EditTaskForm
+        data={data}
+        open={editTaskOpen}
+        handleEditTaskClick={handleEditTaskClick}
+        handleInputChange={handleInputChange}
+        setOpen={setEditTaskOpen}
       />
     </>
   );
