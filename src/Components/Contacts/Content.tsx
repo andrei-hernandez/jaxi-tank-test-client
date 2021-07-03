@@ -6,7 +6,7 @@ import { ADD_CONTACT, DELETE_USER, GET_CONTACTS } from '../../Queries';
 import Navigation from '../Navigation';
 import ContactForm from './ContactForm';
 
-const Content = () => {
+const Content = (): JSX.Element => {
 
   const [open, setOpen] = useState(false);
   const [token] = useState(localStorage.getItem('token'));
@@ -27,30 +27,30 @@ const Content = () => {
     setEmail(e.target.value);
   }
 
-  const handleSubmit = (e: any) => {
-    addContact({ variables: { email, token } });
+  const handleSubmit = async (e: any) => {
+    await addContact({ variables: { email, token } });
   }
 
-  const handleDeleteContactButton = (e: any) => {
-    removeContact({ variables: { email: e.target.name, token } });
+  const handleDeleteContactButton = async (e: any) => {
+    await removeContact({ variables: { email: e.target.name, token } });
   }
 
-  const checkDeleteErrors = (data: any) => {
+  const checkDeleteErrors = async (data: any) => {
     if (data?.deleteContact?.err || data.deleteContact?.contactHasDeleted === false) {
       toast.error(`${data?.deleteContact?.err?.errorDesc}`, { duration: 2300, });
     } else if (data.deleteContact?.contactHasDeleted === true) {
       toast.success('Contact Deleted');
-      refetch();
+      await refetch();
     }
   }
 
-  const checkErrors = (data: any) => {
+  const checkErrors = async (data: any) => {
     if (data?.createContact?.err || data.createContact?.contactHasCreated === false) {
       toast.error(`${data?.createContact?.err?.errorDesc}`, { duration: 2300, });
     } else if (data.createContact?.contactHasCreated === true) {
       toast.success('Contact Added');
       setOpen(false);
-      refetch();
+      await refetch();
     }
   }
 

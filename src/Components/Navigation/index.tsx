@@ -1,24 +1,35 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import Profile from '../Profile';
 import { UPDATE_USER } from '../../Queries';
 import { useMutation } from '@apollo/client';
 import toast, { Toaster } from 'react-hot-toast';
 
-const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
-  { name: 'Projects', href: '/projects', current: false },
-  { name: 'Tasks', href: '/tasks', current: false },
-  { name: 'Contacts', href: '/contacts', current: false },
-]
+
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 const Navigation = (): JSX.Element => {
+
+  const { pathname } = useLocation();
+
+  const navigation = [
+    { name: 'Home', href: '/', current: false },
+    { name: 'Projects', href: '/projects', current: false },
+    { name: 'Tasks', href: '/tasks', current: false },
+    { name: 'Contacts', href: '/contacts', current: false },
+  ];
+
+  navigation.map((item): any => {
+    if (pathname === item?.href) {
+      item.current = true
+    }
+    return null;
+  });
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [open, setOpen] = useState(false);
