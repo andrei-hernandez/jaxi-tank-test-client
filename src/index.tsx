@@ -5,6 +5,8 @@ import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
 import reportWebVitals from './reportWebVitals';
 
+//initialize the react app and set the apollo client provider.
+
 const client = new ApolloClient({
   uri: 'http://34.73.58.215:4000/graphql',
   cache: new InMemoryCache()

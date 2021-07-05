@@ -7,6 +7,7 @@ const AddTaskForm = ({
   handleInputChange = (e: any) => { },
   handleAddTaskClick = () => { }
 }) => {
+  // modal form to add a task in the proyect
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>

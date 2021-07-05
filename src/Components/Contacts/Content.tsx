@@ -8,42 +8,60 @@ import ContactForm from './ContactForm';
 
 const Content = (): JSX.Element => {
 
-  const [open, setOpen] = useState(false);
-  const [token] = useState(localStorage.getItem('token'));
-  const [email, setEmail] = useState('');
+  const [open, setOpen] = useState(false); //state for the modal form
+  const [token] = useState(localStorage.getItem('token')); //state for store the token from the localStorage
+  const [email, setEmail] = useState(''); //state used to store the email input from the contactForm
 
+  //apollo hook to realize a query when the component is onMount and extract _data_ when the response and _refetch_ method to re-realize the query.
   const { data, refetch } = useQuery(GET_CONTACTS, { variables: { token }, fetchPolicy: "network-only" });
 
-  const [addContact] = useMutation(ADD_CONTACT, { onCompleted: (data: any) => checkErrors(data) });
-  const [removeContact] = useMutation(DELETE_USER, { onCompleted: (data: any) => checkDeleteErrors(data) });
+  // apollo hook to realize a mutation when the user require store a contact in him/her account.
+  const [addContact] = useMutation(ADD_CONTACT,
+    {
+      onCompleted: (data: any) => checkErrors(data) //when the mutation is completed calls the function _checkErrors_ to continue with the process
+    });
 
+  // apollo hook to realize a mutation when the user require delete a contact in him/her account.
+  const [removeContact] = useMutation(DELETE_USER,
+    {
+      onCompleted: (data: any) => checkDeleteErrors(data) //when the mutation is completed calls the function _checkDelteErrors_ to continue with the process
+    });
+
+  //event handler to open the modal form for store a contact
   const toggleModal = (e: any) => {
     e.preventDefault();
     setOpen(true);
   }
 
-  const handleInputChange = (e: any) => {
-    console.log(e);
+  //event handler form onChange event in the <input> JSX Tag. to store the value in the email State.
+  const handleInputChange = (e: any): void => {
     setEmail(e.target.value);
   }
 
-  const handleSubmit = async (e: any) => {
+  //event handler to store an calls the destructured function to realize the mutation for store a contact in the user account.
+  const handleSubmit = async (e: any): Promise<void> => {
     await addContact({ variables: { email, token } });
   }
 
+  //event handler to remove a contact from the user account calling the destructured function to realize the mutation.
   const handleDeleteContactButton = async (e: any) => {
     await removeContact({ variables: { email: e.target.name, token } });
   }
 
+  //function which check if the mutation for delete a contact is successful and calls a toast from react-hot-toast
   const checkDeleteErrors = async (data: any) => {
+    //checks if exist the property err _or_ if the property _contactHasDeleted_ is false
     if (data?.deleteContact?.err || data.deleteContact?.contactHasDeleted === false) {
+      //calls an error toast and prints the error description
       toast.error(`${data?.deleteContact?.err?.errorDesc}`, { duration: 2300, });
     } else if (data.deleteContact?.contactHasDeleted === true) {
+      //f the property _contactHasDeleted is true calls a success toast an calls the method refetch to pulls the most actual data after the mutation is completed.
       toast.success('Contact Deleted');
       await refetch();
     }
   }
 
+  // works same at the previous function but with the createContact mutation
   const checkErrors = async (data: any) => {
     if (data?.createContact?.err || data.createContact?.contactHasCreated === false) {
       toast.error(`${data?.createContact?.err?.errorDesc}`, { duration: 2300, });
@@ -60,6 +78,7 @@ const Content = (): JSX.Element => {
       <section className="mt-16 text-blueGray-700">
         <div className="container items-center px-5 py-8 mx-auto lg:px-24">
           <div className="flex flex-wrap mb-12 text-left">
+            {/* maps the contacts array from the data in the getContacts query */}
             {data?.getContacts?.contacts.map((contact: any) => (
               <div className="flex items-center justify-center w-full p-4 mx-auto lg:w-1/3" key={contact?._id}>
                 <div className="p-4 transition ease-in-out bg-gray-100 lg:p-8 rounded-xl hover:bg-gray-200 duration-400">

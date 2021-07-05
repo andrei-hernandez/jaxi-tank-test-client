@@ -10,21 +10,21 @@ import AddTaskMember from './AddTaskMember';
 import EditTaskForm from './EditTaskForm';
 
 const OneTask = () => {
-  const [token] = useState(localStorage.getItem('token'));
-  const [open, setOpen] = useState<boolean>(false);
-  const [editTaskOpen, setEditTaskOpen] = useState<boolean>(false);
-  const { taskId }: any = useParams();
-  const [email, setEmail] = useState<string | null>('');
-  const [title, setTitle] = useState<string | null>('');
-  const [desc, setDesc] = useState<string | null>('');
-  const [startAt, setStartAt] = useState<string | null>('');
-  const [endsAt, setEndsAt] = useState<string | null>('');
-  const [status, setStatus] = useState<string | null>('');
+  const [token] = useState(localStorage.getItem('token')); // store the token from the localStorage
+  const [open, setOpen] = useState<boolean>(false); // manage the add task member modal form state
+  const [editTaskOpen, setEditTaskOpen] = useState<boolean>(false); // // manage the edit task modal form state
+  const { taskId }: any = useParams(); //gets the task id from the params in the pathname using useParams hook by react-router-dom
+  const [email, setEmail] = useState<string | null>(''); // manage the email from the user input
+  const [title, setTitle] = useState<string | null>(''); // manage the title from the user input
+  const [desc, setDesc] = useState<string | null>(''); // manage the description from the user input
+  const [startAt, setStartAt] = useState<string | null>(''); // manage the startAt date from the user input
+  const [endsAt, setEndsAt] = useState<string | null>(''); // manage the endsAt date from the user input
+  const [status, setStatus] = useState<string | null>('todo'); // manage the task status from the user input
 
+  // apollo useQuery hook for get a single task
   const { data, refetch } = useQuery(GET_ONE_TASK, { variables: { token, taskId } });
-  const [addTaskMember] = useMutation(ADD_TASK_MEMBER, { onCompleted: (data: any) => checkErrors(data) });
-  const [editTask] = useMutation(UPDATE_TASK, { onCompleted: (data: any) => checkEditTaskErrors(data) });
 
+  // event handler for each fiel in the forms and storing in the state
   const handleInputChange = ({ target }: any) => {
     const { value, name } = target;
     if (name === 'email') {
@@ -49,11 +49,19 @@ const OneTask = () => {
     }
   }
 
+  // apollo useMutation hook for edit a task
+  const [editTask] = useMutation(UPDATE_TASK, { onCompleted: (data: any) => checkEditTaskErrors(data) });
+
+  // event handler for edit a task
   const handleEditTaskClick = async () => {
     await editTask({ variables: { token, taskId, title, description: desc, status, startAt, endsAt } });
   }
 
-  const handleAddContactClick = async () => {
+  // apollo useMutation hook to create a taskMember
+  const [addTaskMember] = useMutation(ADD_TASK_MEMBER, { onCompleted: (data: any) => checkErrors(data) });
+
+  // event handler for add a taskMembe
+  const handleAddTaskMemberClick = async () => {
     await addTaskMember({ variables: { token, taskId, memberEmail: email } });
   }
 
@@ -147,7 +155,7 @@ const OneTask = () => {
         open={open}
         setOpen={setOpen}
         handleInputChange={handleInputChange}
-        handleAddContactClick={handleAddContactClick}
+        handleAddContactClick={handleAddTaskMemberClick}
       />
       <EditTaskForm
         data={data}

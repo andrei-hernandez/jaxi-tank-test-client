@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, useRef } from 'react';
 
 const CreateProyectForm = ({ open = false, setOpen = (open: boolean) => { }, handleCreateClick = () => { }, handleInputChange = (e: any) => { } }) => {
+  //create proyect modal form
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>

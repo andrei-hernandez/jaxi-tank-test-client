@@ -7,16 +7,16 @@ import { UPDATE_USER } from '../../Queries';
 import { useMutation } from '@apollo/client';
 import toast, { Toaster } from 'react-hot-toast';
 
-
-
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
 const Navigation = (): JSX.Element => {
 
+  //hook to gets the Location data from react-router-dom.
   const { pathname } = useLocation();
 
+  //navigation array to define the buttons and style the navigation bar
   const navigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Projects', href: '/projects', current: false },
@@ -24,7 +24,9 @@ const Navigation = (): JSX.Element => {
     { name: 'Contacts', href: '/contacts', current: false },
   ];
 
+  //checks if the pathname coincide tith a element in the navigation array
   navigation.map((item): any => {
+    //if coincide set with the pathname set the atribute _current_ in true
     if (pathname === item?.href) {
       item.current = true
     }
@@ -46,7 +48,7 @@ const Navigation = (): JSX.Element => {
     }
   }, [isLoggedIn]);
 
-
+  //event handler to remove the sessionData in the localstorage
   const toggleSignOut = (e: any) => {
     e.preventDefault();
     localStorage.removeItem('token');
@@ -56,18 +58,25 @@ const Navigation = (): JSX.Element => {
     setIsLoggedIn(true);
   }
 
+  //event handler to open the ediit profile data
   const toggleModal = (e: any) => {
     e.preventDefault();
     setOpen(true);
   }
 
-  const [editUser] = useMutation(UPDATE_USER, { onCompleted: (data) => checkErrors(data) });
+  //mutation to edit the user data and is completed calls the function _checkErrors_
+  const [editUser] = useMutation(UPDATE_USER,
+    {
+      onCompleted: (data) => checkErrors(data)
+    });
 
+  //event handler to calls the edit user method
   const handleSubmit = (e: any) => {
     editUser({ variables: { token: session, userName, avatar } });
     toggleSignOut(e);
   }
 
+  //event handler to store the value from the user input
   const handleInputChange = (e: any) => {
     const { target } = e;
     if (target.name === 'userName') {
@@ -78,10 +87,13 @@ const Navigation = (): JSX.Element => {
     }
   }
 
+  //checks if exist the properti _err_ in the response of the mutation
   const checkErrors = (data: any) => {
     if (data?.editUser?.err || data.ceditUser?.userHasUpdated === false) {
+      //if exists calls a error toast from react-hot-toast and prints the error description
       toast.error(`${data?.editUser?.err?.errorDesc}`, { duration: 2300, });
     } else if (data.editUser?.contactHasCreated === true) {
+      //if _err_ don't exist calls a succes toast and close the modal;
       toast.success('Contact Added');
       setOpen(false);
     }
@@ -222,7 +234,13 @@ const Navigation = (): JSX.Element => {
           </>
         )}
       </Disclosure>
-      <Profile open={open} setOpen={setOpen} userName={userName} avatar={avatar} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+      <Profile
+        open={open}
+        avatar={avatar}
+        setOpen={setOpen}
+        userName={userName}
+        handleSubmit={handleSubmit}
+        handleInputChange={handleInputChange} />
       {isLoggedIn && <Redirect to="/signin" />}
       <Toaster
         position="top-right"

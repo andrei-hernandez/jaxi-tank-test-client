@@ -1,7 +1,15 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef } from 'react';
 
-const AddProyectMember = ({ open = false, setOpen = (open: boolean) => { }, handleInputChange = (e: any) => { }, handleAddProyectMemberClick = (e: any) => { } }) => {
+const AddProyectMember = (
+  {
+    open = false,
+    setOpen = (open: boolean) => { },
+    handleInputChange = (e: any) => { },
+    handleAddProyectMemberClick = (e: any) => { }
+  }
+) => {
+  // modal form to add a proyect member
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>

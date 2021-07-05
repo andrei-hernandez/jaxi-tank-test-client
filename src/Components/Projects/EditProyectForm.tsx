@@ -14,11 +14,12 @@ const EditProyectForm = (
       }
     },
     open = false,
+    handleEditClick = () => { },
     setOpen = (open: boolean) => { },
     handleInputChange = (e: any) => { },
-    handleEditClick = () => { }
   }
 ) => {
+  // edit proyect modal form
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>
