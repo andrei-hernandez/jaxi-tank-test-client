@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+//here store all the queries might be used across the app
+
 export const LOG_IN = gql`
   query logIn ($email: String!, $password: String!) {
     accountLogIn(user: { email: $email, password: $password }) {

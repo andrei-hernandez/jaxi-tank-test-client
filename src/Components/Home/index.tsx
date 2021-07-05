@@ -15,6 +15,8 @@ const Home = (): JSX.Element => {
     }
   }, [isLoggedIn]);
 
+  //check if the token exists in the localStorage and if is null redirects to signin route using the useEfect hook. 
+
   return (
     <>
       <Content />

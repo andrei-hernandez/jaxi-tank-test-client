@@ -20,12 +20,16 @@ const SignIn = (): JSX.Element => {
     }
   }, [redir]);
 
+  //check if the token exists in the localStorage and if exists redirects to home route using the useEfect hook. 
+
+  // apollo useLazyQuery to makes the login process and is complete store the session data in the localStorage.
   const [logIn] = useLazyQuery(LOG_IN, {
     onCompleted: (data: any) => storeSessionData(data),
     fetchPolicy: "network-only"
   }
   );
 
+  // event handler to gets the user input 
   const handleInputChange = (e: any): void => {
     const { target } = e;
     if (target.name === 'email') {
@@ -36,15 +40,18 @@ const SignIn = (): JSX.Element => {
     }
   }
 
+  // event handler to calls the login query
   const handleSubmit = (e: any): void => {
     e.preventDefault();
     logIn({ variables: { email, password } });
   }
 
+  // check if _err_ exists in the login query data
   const storeSessionData = (data: any) => {
     if (data?.accountLogIn?.err !== null && data?.accountLogIn?.err !== undefined) {
       toast.error(`${data?.accountLogIn?.err?.errorDesc}`);
     } else if (data?.accountLogIn?.err === null || data?.accountLogIn?.err === undefined) {
+      //if _err_ don't exists store the session data in the localStorage and redirect to homePage
       toast.success('Logged!');
       localStorage.setItem('token', data?.accountLogIn?.token);
       localStorage.setItem('userId', data?.accountLogIn?.userId);

@@ -16,10 +16,11 @@ const EditTaskForm = (
     },
     open = false,
     setOpen = (open: boolean) => { },
-    handleInputChange = (e: any) => { },
-    handleEditTaskClick = () => { }
+    handleEditTaskClick = () => { },
+    handleInputChange = (e: any) => { }
   }
 ) => {
+  // edit task modal form
   const cancelButtonRef = useRef(null);
   return (
     <Transition.Root show={open} as={Fragment}>

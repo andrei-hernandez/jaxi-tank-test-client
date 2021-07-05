@@ -2,6 +2,7 @@ import React from 'react';
 
 const SignUpForm = ({ handleInputChange = (e: any) => { }, handleSubmit = (e: any) => { } }) => {
   return (
+    // sign up form
     <section className="flex flex-col items-center h-screen md:flex-row">
       <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
         <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full" />

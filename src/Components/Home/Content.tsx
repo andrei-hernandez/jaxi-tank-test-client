@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import Navigation from '../Navigation';
 
 const Content = (): JSX.Element => {
-
   return (
     <>
       <Navigation />

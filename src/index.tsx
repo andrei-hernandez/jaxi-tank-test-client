@@ -5,6 +5,8 @@ import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider, } from "@apollo/client";
 import reportWebVitals from './reportWebVitals';
 
+//initialize the react app and set the apollo client provider.
+
 const client = new ApolloClient({
   uri: 'https://jaxi-tank-test-api.vercel.app/graphql',
   cache: new InMemoryCache()

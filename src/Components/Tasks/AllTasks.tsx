@@ -6,8 +6,9 @@ import { GET_TASKS_FROM_USER } from '../../Queries';
 
 const AllTasks = () => {
 
-  const [token] = useState<string | any>(localStorage.getItem('token'));
+  const [token] = useState<string | any>(localStorage.getItem('token')); // gets the token from the localStorage
 
+  // apollo useQuery hook for get all the tasks from the user 
   const { data } = useQuery(GET_TASKS_FROM_USER, { variables: { token } });
 
   return (
@@ -15,6 +16,7 @@ const AllTasks = () => {
       <section className="text-gray-700 ">
         <div className="container items-center px-5 py-8 mx-auto lg:px-16">
           <div className="flex flex-wrap mb-12 text-left">
+            {/* maps the tasks array from the _getTasksFomUser_ query */}
             {data?.getTasksFromUser?.tasks.map((task: any) => (
               <div className="w-full p-6 mx-auto lg:w-96" key={task.id}>
                 <div className="p-4 transition ease-in-out transform bg-gray-100 lg:p-8 rounded-xl duration-400 hover:bg-gray-200">
@@ -23,6 +25,7 @@ const AllTasks = () => {
                     <ul>
                       <p className="text-lg">task Members</p>
                       {
+                        //maps the members array in each task
                         task?.members?.map((member: any) => (
                           <li className="pl-3 mt-2 text-gray-700 text-md" key={member?.email}>{member?.email}</li>
                         ))

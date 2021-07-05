@@ -4,6 +4,7 @@ import AllTasks from './AllTasks';
 
 const Tasks = () => {
 
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -14,6 +15,8 @@ const Tasks = () => {
       setIsLoggedIn(true);
     }
   }, [isLoggedIn]);
+
+  //check if the token exists in the localStorage and if is null redirects to signin route using the useEfect hook. 
 
   return (
     <div>

@@ -1,10 +1,18 @@
 import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
-const Profile = ({ open = false, setOpen = (open: boolean) => { }, handleSubmit = (e: any) => { }, handleInputChange = (e: any) => { }, userName = '', avatar = '' }) => {
+const Profile = (
+  {
+    avatar = '',
+    open = false,
+    userName = '',
+    handleSubmit = (e: any) => { },
+    setOpen = (open: boolean) => { },
+    handleInputChange = (e: any) => { }
+  }) => {
   const cancelButtonRef = useRef(null);
   return (
-    /* This example requires Tailwind CSS v2.0+ */
+    /* modal form to edits the username an the avatar URL */
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
@@ -26,7 +34,6 @@ const Profile = ({ open = false, setOpen = (open: boolean) => { }, handleSubmit 
           >
             <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
           </Transition.Child>
-
           {/* This element is to trick the browser into centering the modal contents. */}
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;

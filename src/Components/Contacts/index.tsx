@@ -15,6 +15,8 @@ const Contacts = () => {
     }
   }, [isLoggedIn]);
 
+  //check if the token exists in the localStorage and if is null redirects to signin route using the useEfect hook.
+
   return (
     <div>
       {isLoggedIn && <Redirect to="/signin" />}

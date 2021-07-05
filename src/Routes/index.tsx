@@ -10,6 +10,7 @@ import Tasks from '../Components/Tasks';
 import OneTask from "../Components/Tasks/OneTask";
 
 const Routes = (): JSX.Element => {
+  //creates the routing layout.
   return (
     <Router>
       <Switch>
